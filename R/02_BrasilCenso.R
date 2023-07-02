@@ -8,6 +8,7 @@
 # --------------------------------------------------#
 
 # Libs #####
+library(googlesheets4)
 library(tidyverse)
 library(geobr)
 library(sf)
