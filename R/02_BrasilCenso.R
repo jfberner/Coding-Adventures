@@ -14,7 +14,7 @@ library(sf)
 library(colorspace)
 library(scales)
 # Data #####
-data <- read_csv('data/raw/@gzanlorenssi_populacao_censo_desde_1872 - pop_municipios_wide.csv') %>% 
+data <- read_sheet("https://docs.google.com/spreadsheets/d/1AD8hFrojmjAGEb4GtIaU4Sf6qrOSb5N1l_dj78hPlMc/edit#gid=875213943") %>% 
   rename("code_muni" = codigo_ibge7)
 
 city <- geobr::read_municipality(code_muni = "all") %>% 
@@ -24,14 +24,14 @@ states <- geobr::read_state(code_state = 'all')
 
 dataset <- full_join(data, city, by = c("code_muni", "municipio")) 
 
+estado <- "PR"
+
 # Map Fun :) #####
 ## Population Difference 2022 - 2010 
 d_popDiff <- dataset %>% 
   mutate(popDiff = as.numeric(`2022`) - as.numeric(`2010`)) %>% 
   # filter(popDiff != "NA") %>% 
   st_as_sf()
-
-estado <- "PR"
 
 map_2022_2010_diff <- ggplot(d_popDiff %>% filter(uf == estado)) +
   geom_sf(aes(fill = popDiff),
